@@ -8,6 +8,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://player.vimeo.com/api/player.js"></script>
+    
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1407865301139471');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1407865301139471&ev=PageView&noscript=1"
+    /></noscript>
     <script>
         tailwind.config = {
             theme: {
@@ -137,7 +153,7 @@
                 </div>
                 <div class="space-y-4">
                     <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="monitor" class="float-icon"></i></div>
-                    <p class="text-xs font-bold uppercase">Cursado Flexible (Mixto)</p>
+                    <p class="text-xs font-bold uppercase">Cursado híbrido</p>
                 </div>
                 <div class="space-y-4">
                     <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="calendar" class="float-icon"></i></div>
@@ -223,7 +239,10 @@
             <h3 class="text-2xl font-extrabold uppercase text-center mb-4">Descargar Programa</h3>
             <p class="text-white text-center italic text-sm mb-6">✨ Un asesor te contactará por WhatsApp en menos de 5 minutos.</p>
             <form onsubmit="handleSubmit(event, '044f910b-3a9a-4cdb-a403-cb5756e7ebc7', 'Descarga Programa')" class="space-y-4">
-                <input type="text" name="full_name" placeholder="Nombre completo" class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
+                    <input type="text" name="last_name" placeholder="Apellido" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
+                </div>
                 <input type="email" name="email" placeholder="Correo" class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
                 <input type="tel" name="phone" placeholder="Celular" class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
                 
@@ -286,8 +305,8 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        firstName: form.first_name?.value || form.full_name?.value.split(' ')[0],
-                        lastName: form.last_name?.value || form.full_name?.value.split(' ')[1] || '',
+                        firstName: form.first_name?.value,
+                        lastName: form.last_name?.value,
                         email: form.email.value,
                         phone: phoneFinal,
                         interest: 'Tecnicatura Superior en Esterilización',
