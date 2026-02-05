@@ -202,7 +202,7 @@
             <div id="contacto" class="bg-brandBlue rounded-[40px] p-10 text-white shadow-2xl relative">
                 <h3 class="text-3xl font-extrabold mb-4 uppercase">Completá tus datos</h3>
                 <p class="text-white mb-8 italic text-sm font-semibold">✨ Serás redirigido al programa académico al finalizar.</p>
-                <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51', 'Consulta')" class="space-y-4">
+                <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51')" class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
                         <input type="text" name="last_name" placeholder="Apellido" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
@@ -223,9 +223,9 @@
     <div id="popup" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[100] flex items-center justify-center px-4 overflow-y-auto">
         <div class="bg-brandBlue p-8 rounded-[40px] max-w-xl w-full relative text-white shadow-2xl">
             <button onclick="togglePopup(false)" class="absolute top-6 right-6 text-white/50 hover:text-white"><i data-lucide="x-circle"></i></button>
-            <h3 class="text-2xl font-extrabold uppercase text-center mb-4">Descargar Programa</h3>
-            <p class="text-white text-center italic text-sm mb-6">✨ Completa tus datos para acceder al programa oficial.</p>
-            <form onsubmit="handleSubmit(event, '044f910b-3a9a-4cdb-a403-cb5756e7ebc7', 'Descarga')" class="space-y-4">
+            <h3 class="text-2xl font-extrabold uppercase text-center mb-4">Acceder al Programa</h3>
+            <p class="text-white text-center italic text-sm mb-6">✨ Completa tus datos para ver el plan de estudios oficial.</p>
+            <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51')" class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
                     <input type="text" name="last_name" placeholder="Apellido" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
@@ -271,7 +271,7 @@
             document.body.style.overflow = show ? 'hidden' : 'auto';
         }
 
-        async function handleSubmit(e, triggerId, type) {
+        async function handleSubmit(e, triggerId) {
             e.preventDefault();
             const form = e.target;
             if (parseInt(form.captcha.value) !== currentCaptchaResult) {
@@ -301,7 +301,7 @@
                     })
                 });
                 
-                // Redirección directa al programa académico tras el éxito del Webhook
+                // Redirección directa al programa académico tras el envío exitoso
                 window.location.href = 'programa.html';
 
             } catch (err) { 
