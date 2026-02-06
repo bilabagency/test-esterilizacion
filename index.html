@@ -43,7 +43,7 @@
         html { scroll-behavior: smooth; }
         .hero-overlay {
             background-image: linear-gradient(to right, rgba(45, 90, 88, 0.9) 0%, rgba(45, 90, 88, 0.5) 50%, rgba(0, 0, 0, 0.3) 100%), 
-                              url('https://i.ibb.co/B2hr19Gx/Gemini-Generated-Image-27zs5f27zs5f27zs.png');
+                            url('https://i.ibb.co/B2hr19Gx/Gemini-Generated-Image-27zs5f27zs5f27zs.png');
             background-size: cover;
             background-position: center;
         }
@@ -202,7 +202,7 @@
             <div id="contacto" class="bg-brandBlue rounded-[40px] p-10 text-white shadow-2xl relative">
                 <h3 class="text-3xl font-extrabold mb-4 uppercase">Completá tus datos</h3>
                 <p class="text-white mb-8 italic text-sm font-semibold">✨ Serás redirigido al programa académico al finalizar.</p>
-                <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51')" class="space-y-4">
+                <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51', 'Consulta General')" class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
                         <input type="text" name="last_name" placeholder="Apellido" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
@@ -225,7 +225,7 @@
             <button onclick="togglePopup(false)" class="absolute top-6 right-6 text-white/50 hover:text-white"><i data-lucide="x-circle"></i></button>
             <h3 class="text-2xl font-extrabold uppercase text-center mb-4">Acceder al Programa</h3>
             <p class="text-white text-center italic text-sm mb-6">✨ Completa tus datos para ver el plan de estudios oficial.</p>
-            <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51')" class="space-y-4">
+            <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51', 'Descarga Programa')" class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
                     <input type="text" name="last_name" placeholder="Apellido" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
@@ -246,6 +246,17 @@
 
     <script>
         lucide.createIcons();
+
+        // ----------------------------------------------------
+        // HELPER PARA OBTENER COOKIES DE META (NECESARIO PARA CAPI)
+        // ----------------------------------------------------
+        const getCookie = (name) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        };
+
+        // Captcha Logic
         let currentCaptchaResult = 0;
         function updateCaptchas() {
             const a = Math.floor(Math.random() * 9) + 1;
@@ -255,6 +266,7 @@
         }
         updateCaptchas();
 
+        // Video Logic
         const player = new Vimeo.Player(document.querySelector('#video-egresados'));
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -271,40 +283,84 @@
             document.body.style.overflow = show ? 'hidden' : 'auto';
         }
 
-        async function handleSubmit(e, triggerId) {
+        // ----------------------------------------------------
+        // LOGICA DE ENVÍO OPTIMIZADA PARA CONVERSIONES CAPI + PIXEL
+        // ----------------------------------------------------
+        async function handleSubmit(e, triggerId, type) {
             e.preventDefault();
             const form = e.target;
-            if (parseInt(form.captcha.value) !== currentCaptchaResult) {
-                alert('Captcha incorrecto.');
+            const captchaInput = form.querySelector('[name="captcha"]');
+
+            if (parseInt(captchaInput.value) !== currentCaptchaResult) {
+                alert('Captcha incorrecto. Intentá de nuevo.');
                 updateCaptchas();
+                captchaInput.value = '';
                 return;
             }
+
             const btn = form.querySelector('button');
             const originalText = btn.innerText;
-            btn.innerText = 'ENVIANDO...';
-            btn.disabled = true;
+            
+            // Limpieza de teléfono
+            let phoneRaw = form.querySelector('[name="phone"]').value;
+            let phoneClean = phoneRaw.replace(/\D/g, ''); 
+            if (phoneClean !== '' && !phoneClean.startsWith('54')) phoneClean = '54' + phoneClean;
 
-            const phone = form.phone.value.replace(/\D/g, '');
-            const phoneFinal = phone.startsWith('54') ? phone : '54' + phone;
+            // GENERACIÓN DE ID ÚNICO Y RECUPERACIÓN DE COOKIES
+            const eventId = 'lead_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+            const fbp = getCookie('_fbp');
+            const fbc = getCookie('_fbc');
+
+            const webhookUrl = `https://services.leadconnectorhq.com/hooks/h9UGYG3IwsHJd47SoPsD/webhook-trigger/${triggerId}`;
+
+            const data = {
+                firstName: form.querySelector('[name="first_name"]').value,
+                lastName: form.querySelector('[name="last_name"]').value,
+                email: form.querySelector('[name="email"]').value,
+                phone: phoneClean,
+                interest: 'Tecnicatura Superior en Esterilización',
+                source: 'Landing Esterilización 2026',
+                formType: type,
+                // DATOS TÉCNICOS AGREGADOS PARA META CAPI
+                eventId: eventId,
+                fbp: fbp,
+                fbc: fbc,
+                userAgent: navigator.userAgent,
+                eventSourceUrl: window.location.href
+            };
 
             try {
-                await fetch(`https://services.leadconnectorhq.com/hooks/h9UGYG3IwsHJd47SoPsD/webhook-trigger/${triggerId}`, {
+                btn.innerText = 'ENVIANDO...';
+                btn.disabled = true;
+
+                // 1. Envío al Webhook de GHL (Backend CAPI)
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        firstName: form.first_name.value,
-                        lastName: form.last_name.value,
-                        email: form.email.value,
-                        phone: phoneFinal,
-                        interest: 'Tecnicatura Superior en Esterilización',
-                        source: 'Landing Esterilización 2026'
-                    })
+                    body: JSON.stringify(data)
                 });
+
+                // VERIFICACION CRITICA
+                if (!response.ok) {
+                    throw new Error('Error en el envío al servidor');
+                }
+                
+                // 2. Disparo del Píxel (Frontend) con DEDUPLICACIÓN
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: 'Inscripción Esterilización 2026',
+                        content_category: 'Educación Superior'
+                    }, { eventID: eventId }); 
+                }
+
+                // Confirmación Visual
+                alert('¡Excelente! Recibimos tus datos. Ahora te redirigimos al programa académico.');
                 
                 // Redirección directa al programa académico tras el envío exitoso
-                window.location.href = 'programa.html';
+                window.location.href = 'https://esterilizacion.carrerasjerarquicos.com/programa.html';
 
             } catch (err) { 
+                console.error(err);
                 alert('Ocurrió un error. Intenta nuevamente.'); 
                 btn.innerText = originalText; 
                 btn.disabled = false;
