@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://player.vimeo.com/api/player.js"></script>
     
     <script>
     !function(f,b,e,v,n,t,s)
@@ -52,23 +51,36 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.4);
         }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 20px;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-        }
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
         .float-icon { animation: float 3s ease-in-out infinite; }
+        
+        /* Contenedor del Reel - Sin Overlay */
+        .instagram-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            aspect-ratio: 9 / 16;
+            background: #fff;
+            border-radius: 45px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+            border: 10px solid #fff;
+        }
+        .instagram-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .instruction-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+            border: 2px solid #5FB9B0;
+        }
     </style>
 </head>
 <body class="bg-brandBg text-slate-800 antialiased font-sans">
@@ -134,41 +146,10 @@
         </div>
     </section>
 
-    <section class="py-24 relative overflow-hidden bg-brandTurquoise text-white text-center">
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <h2 class="text-3xl md:text-5xl font-black uppercase mb-12">Carrera con Amplia Demanda Laboral</h2>
-            <div class="grid grid-cols-2 lg:grid-cols-5 gap-6">
-                <div class="space-y-4">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="award" class="float-icon"></i></div>
-                    <p class="text-xs font-bold uppercase">Título con Validez Nacional</p>
-                </div>
-                <div class="space-y-4">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="trending-up" class="float-icon"></i></div>
-                    <p class="text-xs font-bold uppercase">Articulación Universitaria</p>
-                </div>
-                <div class="space-y-4">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="monitor" class="float-icon"></i></div>
-                    <p class="text-xs font-bold uppercase">Cursado híbrido</p>
-                </div>
-                <div class="space-y-4">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="calendar" class="float-icon"></i></div>
-                    <p class="text-xs font-bold uppercase">Duración de 3 Años</p>
-                </div>
-                <div class="space-y-4">
-                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto border border-white/20"><i data-lucide="stethoscope" class="float-icon"></i></div>
-                    <p class="text-xs font-bold uppercase">Prácticas Profesionalizantes</p>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row gap-6 justify-center mt-16 px-6">
-                <button onclick="scrollToId('contacto')" class="bg-white text-brandTurquoise font-black py-5 px-12 rounded-full hover:bg-brandBlue hover:text-white transition-all uppercase text-sm shadow-xl">Quiero más info</button>
-                <button onclick="togglePopup(true)" class="bg-brandBlue text-white border-2 border-brandBlue font-black py-5 px-12 rounded-full hover:bg-white hover:text-brandBlue transition-all uppercase text-sm shadow-xl">Descargar programa completo</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 px-6 bg-slate-50">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="bg-white p-10 rounded-[40px] shadow-xl border-t-8 border-brandTurquoise mb-12">
+    <section class="py-24 px-6 bg-slate-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="bg-white p-10 rounded-[40px] shadow-xl border-t-8 border-brandTurquoise mb-24 text-center">
                 <h3 class="text-2xl md:text-4xl font-black text-brandBlue uppercase mb-4">Horarios que encajan con vos</h3>
                 <p class="text-slate-500 mb-8 font-semibold">Tu mañana para trabajar, tu tarde para crecer.</p>
                 <div class="inline-block bg-brandTurquoise/10 px-8 py-4 rounded-3xl mb-10">
@@ -176,11 +157,44 @@
                 </div>
                 <div class="flex flex-col md:flex-row gap-4 justify-center">
                     <button onclick="togglePopup(true)" class="bg-brandTurquoise text-white font-extrabold py-4 px-8 rounded-full shadow-lg uppercase text-sm">Descargar programa</button>
-                    <button onclick="scrollToId('contacto')" class="bg-transparent border-2 border-brandTurquoise text-brandTurquoise font-extrabold py-4 px-8 rounded-full hover:bg-brandTurquoise hover:text-white transition-all uppercase text-sm">Quiero hablar con un asesor</button>
+                    <button onclick="scrollToId('contacto')" class="bg-transparent border-2 border-brandTurquoise text-brandTurquoise font-extrabold py-4 px-8 rounded-full hover:bg-brandTurquoise hover:text-white transition-all uppercase text-sm">Hablar con un asesor</button>
                 </div>
             </div>
-            <div class="video-container shadow-2xl border-4 border-white">
-                <iframe id="video-egresados" src="https://player.vimeo.com/video/1160789146?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen" title="video testimonios"></iframe>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10 order-2 md:order-1">
+                    <div class="space-y-4">
+                        <h2 class="text-4xl md:text-6xl font-black text-brandBlue uppercase leading-[1.1]">
+                            Testimonios de<br>
+                            <span class="text-brandTurquoise">egresados</span>
+                        </h2>
+                        <div class="h-2 w-24 bg-brandTurquoise rounded-full"></div>
+                    </div>
+                    
+                    <p class="text-slate-600 text-xl md:text-2xl font-medium leading-relaxed max-w-lg">
+                        Conocé la experiencia real de quienes ya transformaron su futuro con nosotros.
+                    </p>
+
+                    <div class="instruction-card p-8 rounded-[40px] shadow-2xl relative border-2 border-brandTurquoise animate-pulse">
+                        <div class="absolute -top-6 -left-6 w-12 h-12 bg-brandTurquoise text-white rounded-full flex items-center justify-center shadow-lg">
+                            <i data-lucide="mouse-pointer-2"></i>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <p class="text-brandBlue font-black text-xl uppercase tracking-tighter">¡Importante!</p>
+                            <p class="text-slate-700 font-bold text-lg leading-snug">
+                                <span class="text-brandTurquoise">TOCÁ EL CENTRO DEL VIDEO</span> (o la imagen de la publicación) para iniciar la reproducción y activar el sonido.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex justify-center md:justify-end order-1 md:order-2">
+                    <div class="absolute inset-0 bg-brandTurquoise/20 blur-[100px] rounded-full transform scale-75"></div>
+                    
+                    <div class="instagram-wrapper">
+                        <iframe id="insta-reel" src="https://www.instagram.com/reel/DQsacKLDJZH/embed/captioned/" allowtransparency="true" allowfullscreen="true" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -191,40 +205,40 @@
                 <h2 class="text-4xl font-extrabold text-brandBlue mb-8 uppercase">¿Sentís que tu trabajo actual no tiene proyección?</h2>
                 <div class="flex gap-4 p-6 bg-white rounded-2xl shadow-sm border-l-8 border-brandTurquoise">
                     <i data-lucide="alert-circle" class="text-brandTurquoise shrink-0"></i>
-                    <p class="font-semibold">"Trabajo muchas horas pero siento que no avanzo hacia ningún lado".</p>
+                    <p class="font-semibold text-lg">"Trabajo muchas horas pero siento que no avanzo hacia ningún lado".</p>
                 </div>
                 <div class="flex gap-4 p-6 bg-white rounded-2xl shadow-sm border-l-8 border-brandTurquoise">
                     <i data-lucide="user-plus" class="text-brandTurquoise shrink-0"></i>
-                    <p class="font-semibold">"Quiero un trabajo que importe, que sea significativo para la salud".</p>
+                    <p class="font-semibold text-lg">"Quiero un trabajo que importe, que sea significativo para la salud".</p>
                 </div>
             </div>
 
-            <div id="contacto" class="bg-brandBlue rounded-[40px] p-10 text-white shadow-2xl relative">
-                <h3 class="text-3xl font-extrabold mb-4 uppercase">Completá tus datos</h3>
-                <p class="text-white mb-8 italic text-sm font-semibold">✨ Serás redirigido al programa académico al finalizar.</p>
-                <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51', 'Consulta General')" class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
-                        <input type="text" name="last_name" placeholder="Apellido" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
+            <div id="contacto" class="bg-brandBlue rounded-[40px] p-10 md:p-14 text-white shadow-2xl relative">
+                <h3 class="text-3xl font-extrabold mb-4 uppercase tracking-tight">Completá tus datos</h3>
+                <p class="text-white/80 mb-8 italic text-sm font-semibold">✨ Serás redirigido al programa académico al finalizar.</p>
+                <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51', 'Consulta General')" class="space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" name="first_name" placeholder="Nombre" class="p-5 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800 transition-all" required>
+                        <input type="text" name="last_name" placeholder="Apellido" class="p-5 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800 transition-all" required>
                     </div>
-                    <input type="email" name="email" placeholder="Correo" class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
-                    <input type="tel" name="phone" placeholder="Celular" class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
+                    <input type="email" name="email" placeholder="Correo Electrónico" class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800 transition-all" required>
+                    <input type="tel" name="phone" placeholder="Celular (Ej: 342 4123456)" class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800 transition-all" required>
                     
-                    <div class="bg-white/5 p-4 rounded-2xl border border-white/20 flex justify-between items-center">
-                        <label class="captcha-label font-bold">Cargando...</label>
-                        <input type="number" name="captcha" class="w-20 p-2 rounded-xl bg-white/20 text-center text-white font-bold" required>
+                    <div class="bg-white/5 p-5 rounded-2xl border border-white/20 flex justify-between items-center">
+                        <label class="captcha-label font-bold text-lg">Cargando...</label>
+                        <input type="number" name="captcha" class="w-24 p-3 rounded-xl bg-white/20 text-center text-white font-bold text-xl" required>
                     </div>
-                    <button type="submit" class="w-full bg-brandTurquoise text-white font-extrabold py-5 rounded-2xl shadow-xl hover:brightness-110 uppercase text-lg">Solicitar información ahora</button>
+                    <button type="submit" class="w-full bg-brandTurquoise text-white font-black py-6 rounded-2xl shadow-xl hover:brightness-110 transition-all text-xl uppercase tracking-widest">Solicitar información ahora</button>
                 </form>
             </div>
         </div>
     </section>
 
     <div id="popup" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[100] flex items-center justify-center px-4 overflow-y-auto">
-        <div class="bg-brandBlue p-8 rounded-[40px] max-w-xl w-full relative text-white shadow-2xl">
+        <div class="bg-brandBlue p-8 md:p-12 rounded-[40px] max-w-xl w-full relative text-white shadow-2xl my-10">
             <button onclick="togglePopup(false)" class="absolute top-6 right-6 text-white/50 hover:text-white"><i data-lucide="x-circle"></i></button>
-            <h3 class="text-2xl font-extrabold uppercase text-center mb-4">Acceder al Programa</h3>
-            <p class="text-white text-center italic text-sm mb-6">✨ Completa tus datos para ver el plan de estudios oficial.</p>
+            <h3 class="text-3xl font-extrabold uppercase text-center mb-4">Acceder al Programa</h3>
+            <p class="text-white/70 text-center italic text-sm mb-8">✨ Completá tus datos para ver el plan de estudios oficial.</p>
             <form onsubmit="handleSubmit(event, '05c5f9ae-c80c-40bd-aa20-1650a0024e51', 'Descarga Programa')" class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <input type="text" name="first_name" placeholder="Nombre" class="p-4 rounded-2xl bg-white/10 border border-white/20 text-white outline-none focus:bg-white focus:text-slate-800" required>
@@ -237,7 +251,7 @@
                     <label class="captcha-label font-bold">Cargando...</label>
                     <input type="number" name="captcha" class="w-20 p-2 rounded-xl bg-white/20 text-center font-bold" required>
                 </div>
-                <button type="submit" class="w-full bg-brandTurquoise font-extrabold py-5 rounded-2xl shadow-xl uppercase">Ver Programa Ahora</button>
+                <button type="submit" class="w-full bg-brandTurquoise text-white font-black py-5 rounded-2xl shadow-xl uppercase tracking-widest">Ver Programa Ahora</button>
             </form>
         </div>
     </div>
@@ -247,16 +261,12 @@
     <script>
         lucide.createIcons();
 
-        // ----------------------------------------------------
-        // HELPER PARA OBTENER COOKIES DE META (NECESARIO PARA CAPI)
-        // ----------------------------------------------------
         const getCookie = (name) => {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         };
 
-        // Captcha Logic
         let currentCaptchaResult = 0;
         function updateCaptchas() {
             const a = Math.floor(Math.random() * 9) + 1;
@@ -266,26 +276,12 @@
         }
         updateCaptchas();
 
-        // Video Logic
-        const player = new Vimeo.Player(document.querySelector('#video-egresados'));
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    player.setVolume(1).then(() => player.play().catch(e => console.log("Video Play")));
-                } else { player.pause(); }
-            });
-        }, { threshold: 0.6 });
-        observer.observe(document.querySelector('.video-container'));
-
         function scrollToId(id) { window.scrollTo({ top: document.getElementById(id).offsetTop - 100, behavior: 'smooth' }); }
         function togglePopup(show) { 
             document.getElementById('popup').classList.toggle('hidden', !show);
             document.body.style.overflow = show ? 'hidden' : 'auto';
         }
 
-        // ----------------------------------------------------
-        // LOGICA DE ENVÍO OPTIMIZADA PARA CONVERSIONES CAPI + PIXEL
-        // ----------------------------------------------------
         async function handleSubmit(e, triggerId, type) {
             e.preventDefault();
             const form = e.target;
@@ -301,12 +297,10 @@
             const btn = form.querySelector('button');
             const originalText = btn.innerText;
             
-            // Limpieza de teléfono
             let phoneRaw = form.querySelector('[name="phone"]').value;
             let phoneClean = phoneRaw.replace(/\D/g, ''); 
             if (phoneClean !== '' && !phoneClean.startsWith('54')) phoneClean = '54' + phoneClean;
 
-            // GENERACIÓN DE ID ÚNICO Y RECUPERACIÓN DE COOKIES
             const eventId = 'lead_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             const fbp = getCookie('_fbp');
             const fbc = getCookie('_fbc');
@@ -321,7 +315,6 @@
                 interest: 'Tecnicatura Superior en Esterilización',
                 source: 'Landing Esterilización 2026',
                 formType: type,
-                // DATOS TÉCNICOS AGREGADOS PARA META CAPI
                 eventId: eventId,
                 fbp: fbp,
                 fbc: fbc,
@@ -333,19 +326,14 @@
                 btn.innerText = 'ENVIANDO...';
                 btn.disabled = true;
 
-                // 1. Envío al Webhook de GHL (Backend CAPI)
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
 
-                // VERIFICACION CRITICA
-                if (!response.ok) {
-                    throw new Error('Error en el envío al servidor');
-                }
+                if (!response.ok) throw new Error('Error en el envío');
                 
-                // 2. Disparo del Píxel (Frontend) con DEDUPLICACIÓN
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Lead', {
                         content_name: 'Inscripción Esterilización 2026',
@@ -353,10 +341,7 @@
                     }, { eventID: eventId }); 
                 }
 
-                // Confirmación Visual
                 alert('¡Excelente! Recibimos tus datos. Ahora te redirigimos al programa académico.');
-                
-                // Redirección directa al programa académico tras el envío exitoso
                 window.location.href = 'https://esterilizacion.carrerasjerarquicos.com/programa.html';
 
             } catch (err) { 
